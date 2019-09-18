@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "PandoraPlayer"
-  s.version      = "1.3"
+  s.version      = "1.3.1"
   s.summary      = "Music Player for iOS"
   s.description  = "A simple iOS music player library written in Swift"
 
@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
   s.exclude_files = "Classes/Exclude"
 
   s.resources = "Player/**/*.{storyboard,xib,xcassets}"
+  s.resources_bundles = "Player/**/*.{storyboard,xib,xcassets}"
 
   s.dependency "AudioKit", "4.7.2"
 
