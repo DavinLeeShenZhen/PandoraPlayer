@@ -11,7 +11,7 @@ import UIKit
 typealias CellActivityItem = (index: Int, activity: CGFloat)
 
 protocol PlayerSongListDelegate: class {
-	func currentSongDidChanged(index: Int)
+    func currentSongDidChanged(index: Int)
     func prefetchItems(at indices: [Int])
     func next()
     func didTap()
@@ -34,7 +34,7 @@ class PlayerSongList: ViewWithXib {
     
     weak var delegate: PlayerSongListDelegate?
     private(set) var songs: [Song] = []
-	fileprivate (set) var currentSongIndex: Int = 0
+    fileprivate (set) var currentSongIndex: Int = 0
     
     // MARK: Outlets
     
@@ -55,29 +55,29 @@ class PlayerSongList: ViewWithXib {
         insets.left = self.frame.size.width * leftInsetCoefficient
         insets.right = insets.left
         self.collectionView.contentInset = insets
-        self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        self.collectionView.decelerationRate = UIScrollView.DecelerationRate.fast
         DispatchQueue.main.async {
             self.updateCellSizes()
         }
     }
     
     // MARK: UI
-	
+    
     override func initUI() {
         super.initUI()
-		
-		collectionView.delegate = self
-		collectionView.dataSource = self
-		collectionView.backgroundColor = UIColor.clear
-		collectionView.backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-		collectionView.register(UINib(nibName: RoundedPictureCollectionViewCell.className, bundle: Bundle(for: self.classForCoder)), forCellWithReuseIdentifier: RoundedPictureCollectionViewCell.className)
-		collectionView.decelerationRate = decelerationRate
-		
-		let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-		tap.numberOfTapsRequired = numberOfTapsRequired
-		addGestureRecognizer(tap)
-	}
-	
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = UIColor.clear
+        collectionView.backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        collectionView.register(UINib(nibName: RoundedPictureCollectionViewCell.className, bundle: Bundle(for: self.classForCoder)), forCellWithReuseIdentifier: RoundedPictureCollectionViewCell.className)
+        collectionView.decelerationRate = UIScrollView.DecelerationRate(rawValue: decelerationRate)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        tap.numberOfTapsRequired = numberOfTapsRequired
+        addGestureRecognizer(tap)
+    }
+    
     func setCurrentIndex(index: Int, animated: Bool) {
         guard index < songs.count, index >= 0 else {
             return
@@ -88,15 +88,15 @@ class PlayerSongList: ViewWithXib {
         updateCellSizes()
     }
     
-	@objc private func doubleTapped(g: UIGestureRecognizer) {
-		delegate?.didTap()
-	}
-
-	// MARK: Configuration
+    @objc private func doubleTapped(g: UIGestureRecognizer) {
+        delegate?.didTap()
+    }
+    
+    // MARK: Configuration
     func configure(with songs: [Song]) {
         self.songs = songs
-		self.collectionView.reloadData()
-	}
+        self.collectionView.reloadData()
+    }
     
     fileprivate func updateCellSizes() {
         collectionView.visibleCells.forEach { cell in
@@ -110,7 +110,7 @@ class PlayerSongList: ViewWithXib {
             (centerOffset*expansionValue)/(bounds.width/2))
         cell.transform = CGAffineTransform.identity.scaledBy(x: transformValue, y: transformValue)
     }
-	
+    
     fileprivate func getDistanceFromCenter(for cell: UICollectionViewCell) -> CGFloat {
         let centerXOffset = collectionView.contentOffset.x + bounds.width/2
         return abs(cell.center.x - centerXOffset)
@@ -146,7 +146,7 @@ class PlayerSongList: ViewWithXib {
 
 // MARK: UICollectionViewDelegateFlowLayout
 extension PlayerSongList: UICollectionViewDelegateFlowLayout {
-	
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.width / 2, height: collectionView.frame.size.height)
     }
@@ -174,23 +174,23 @@ extension PlayerSongList: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-	    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoundedPictureCollectionViewCell.className, for: indexPath) as! RoundedPictureCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoundedPictureCollectionViewCell.className, for: indexPath) as! RoundedPictureCollectionViewCell
         cell.transform = CGAffineTransform.identity
         cell.configure(with: songs[indexPath.row].metadata?.artwork)
         return cell
     }
-	
-	func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-		let x = self.collectionView.contentOffset.x + self.collectionView.contentInset.left
-		let p = CGPoint(x: x, y: 0)
-		guard let ix = collectionView.indexPathForItem(at: p) else {
-			return
-		}
-
-		self.currentSongIndex = ix.row
-		self.delegate?.currentSongDidChanged(index: ix.row)
-	}
-
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let x = self.collectionView.contentOffset.x + self.collectionView.contentInset.left
+        let p = CGPoint(x: x, y: 0)
+        guard let ix = collectionView.indexPathForItem(at: p) else {
+            return
+        }
+        
+        self.currentSongIndex = ix.row
+        self.delegate?.currentSongDidChanged(index: ix.row)
+    }
+    
 }
 
 // MARK: UICollectionViewDataSourcePrefetching

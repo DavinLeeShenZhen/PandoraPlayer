@@ -10,11 +10,11 @@ import UIKit
 
 
 protocol PlayerControlsDelegate: class {
-	func onRepeat()
-	func onRewindBack()
-	func onPlay()
-	func onRewindForward()
-	func onShuffle()
+    func onRepeat()
+    func onRewindBack()
+    func onPlay()
+    func onRewindForward()
+    func onShuffle()
 }
 
 class PlayerControls: ViewWithXib {
@@ -27,10 +27,10 @@ class PlayerControls: ViewWithXib {
     // MARK: Constants
     
     private let defaultAlpha: CGFloat = 0.5
-
+    
     // Properties
     
-	weak var delegate: PlayerControlsDelegate?
+    weak var delegate: PlayerControlsDelegate?
     
     var status: Status = .Loading {
         didSet {
@@ -38,12 +38,12 @@ class PlayerControls: ViewWithXib {
         }
     }
     
-	var isPlaying: Bool = false {
-		didSet {
-			let imageStr = isPlaying ? Images.pause: Images.play
+    var isPlaying: Bool = false {
+        didSet {
+            let imageStr = isPlaying ? Images.pause: Images.play
             self.playButton.setImage(UIImage(named: imageStr, in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
-		}
-	}
+        }
+    }
     
     var isRepeatModeOn: Bool = false {
         didSet {
@@ -60,42 +60,42 @@ class PlayerControls: ViewWithXib {
     
     // MARK: Outlets
     
-	@IBOutlet private weak var repeatButton: UIButton!
-	@IBOutlet private weak var rewindBackButton: UIButton!
-	@IBOutlet private weak var playButton: UIButton!
-	@IBOutlet private weak var rewindForwardButton: UIButton!
-	@IBOutlet private weak var shuffleButton: UIButton!
-	
+    @IBOutlet private weak var repeatButton: UIButton!
+    @IBOutlet private weak var rewindBackButton: UIButton!
+    @IBOutlet private weak var playButton: UIButton!
+    @IBOutlet private weak var rewindForwardButton: UIButton!
+    @IBOutlet private weak var shuffleButton: UIButton!
+    
     // MARK: UI
     
-	override func initUI() {
-		isPlaying = false
+    override func initUI() {
+        isPlaying = false
         isRepeatModeOn = false
         isShuffleModeOn = false
-		backgroundColor = .clear
-	}
-
+        backgroundColor = .clear
+    }
+    
     // MARK: IBActions
     
-	@IBAction private func repeatDidTap(_ sender: Any) {
-		delegate?.onRepeat()
-	}
-	
-	@IBAction private func rewindBackDidTap(_ sender: Any) {
-		delegate?.onRewindBack()
-	}
-	
-	@IBAction private func playDidTap(_ sender: Any) {
-		delegate?.onPlay()
-	}
-	
-	@IBAction private func rewindForwardDidTap(_ sender: Any) {
-		delegate?.onRewindForward()
-	}
-	
-	@IBAction private func shuffleDidTap(_ sender: Any) {
-		delegate?.onShuffle()
-	}
+    @IBAction private func repeatDidTap(_ sender: Any) {
+        delegate?.onRepeat()
+    }
+    
+    @IBAction private func rewindBackDidTap(_ sender: Any) {
+        delegate?.onRewindBack()
+    }
+    
+    @IBAction private func playDidTap(_ sender: Any) {
+        delegate?.onPlay()
+    }
+    
+    @IBAction private func rewindForwardDidTap(_ sender: Any) {
+        delegate?.onRewindForward()
+    }
+    
+    @IBAction private func shuffleDidTap(_ sender: Any) {
+        delegate?.onShuffle()
+    }
     
     // MARK: Private
     
@@ -105,7 +105,7 @@ class PlayerControls: ViewWithXib {
             let image = UIImage(named: Images.playLoading, in: Bundle(for: self.classForCoder), compatibleWith: nil)
             playButton.setImage(image, for: .normal)
             
-            let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            let activityIndicatorView = UIActivityIndicatorView(style: .gray)
             activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
             
             playButton.addSubview(activityIndicatorView)
