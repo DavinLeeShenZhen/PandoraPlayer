@@ -17,7 +17,6 @@ Pod::Spec.new do |s|
   s.exclude_files = "Classes/Exclude"
 
   s.resources = "Player/**/*.{storyboard,xib,xcassets}"
-  s.resource_bundles = "Player/**/*.{storyboard,xib,xcassets}"
   
   s.dependency "AudioKit", "4.7.2"
 
